@@ -201,7 +201,7 @@ namespace CombClasses
 
     class SubSet : CombClass
     {
-        bool[] keep;
+        protected bool[] keep;
 
         public SubSet(char[] set)
         {
@@ -269,6 +269,24 @@ namespace CombClasses
             {
                 str += set[i];
             }
+            return str;
+        }
+    }
+
+    class Combination : SubSet
+    {
+        int k;
+        public Combination(char[] set, int k): base(set)
+        {
+            this.k = k;
+            for (int i = 0; i < k; i++) keep[i] = true;
+        }
+
+        public override string GetLastObj()
+        {
+            string str = "";
+            for (int i = 0; i < k - 1; i++) str += set[i];
+            str += set[set.Length - 1];
             return str;
         }
     }
