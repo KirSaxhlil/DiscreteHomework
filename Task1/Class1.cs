@@ -19,6 +19,10 @@ namespace CombClasses
             for (int i = 0; i < obj.Length; i++) str += obj[i];
             return str;
         }
+
+        abstract public string GetLastObj();
+
+        abstract public string GetFirstObj();
     }
 
     class ArrangementR: CombClass
@@ -30,7 +34,7 @@ namespace CombClasses
             this.set = set;
             this.k = k;
             obj = new char[k];
-            for (int i = 0; i < k; k++) obj[i] = set[0];
+            for (int i = 0; i < k; i++) obj[i] = set[0];
         }
 
         public override void nextObj()
@@ -56,6 +60,19 @@ namespace CombClasses
                 elem = set[index + 1];
                 return false;
             }
+        }
+
+        public override string GetLastObj()
+        {
+            string str = "";
+            for (int i = 0; i < obj.Length; i++) str += set[set.Length - 1];
+            return str;
+        }
+        public override string GetFirstObj()
+        {
+            string str = "";
+            for (int i = 0; i < obj.Length; i++) str += set[0];
+            return str;
         }
     }
 }
