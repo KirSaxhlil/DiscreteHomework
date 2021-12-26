@@ -22,7 +22,14 @@ namespace CombClasses
 
         abstract public string GetLastObj();
 
-        abstract public string GetFirstObj();
+        protected int GetIndOfChar(char c)
+        {
+            for(int i = 0; i < set.Length; i++)
+            {
+                if (set[i] == c) return i;
+            }
+            return -1;
+        }
     }
 
     class ArrangementR: CombClass
@@ -68,10 +75,61 @@ namespace CombClasses
             for (int i = 0; i < obj.Length; i++) str += set[set.Length - 1];
             return str;
         }
-        public override string GetFirstObj()
+    }
+
+    class Permutation : CombClass
+    {
+        public Permutation(char[] set)
+        {
+            this.set = set;
+            obj = new char[set.Length];
+            for(int i = 0; i < obj.Length; i++)
+            {
+                obj[i] = set[i];
+            }
+        }
+        public override void nextObj()
+        {
+            int a = 0, t = 0, b = 0;
+            for(int i = obj.Length-1; i > -1; i--)
+            {
+                if(GetIndOfChar(obj[i-1]) < GetIndOfChar(obj[i])) {
+                    a = i-1;
+                    t = GetIndOfChar(obj[i - 1]);
+                    break;
+                }
+            }
+
+            for (int i = obj.Length - 1; i > -1; i--)
+            {
+                if (GetIndOfChar(obj[i]) > t)
+                {
+                    b = i;
+                    break;
+                }
+            }
+            swapElems(a, b);
+
+            for(int i = 1; i <= (obj.Length-a)/2; i++)
+            {
+                swapElems(a+i, obj.Length - i);
+            }
+        }
+
+        void swapElems(int i, int j)
+        {
+            char tmp = obj[i];
+            obj[i] = obj[j];
+            obj[j] = tmp;
+        }
+
+        public override string GetLastObj()
         {
             string str = "";
-            for (int i = 0; i < obj.Length; i++) str += set[0];
+            for(int i = 0; i < obj.Length; i++)
+            {
+                str += set[set.Length - 1 - i];
+            }
             return str;
         }
     }
