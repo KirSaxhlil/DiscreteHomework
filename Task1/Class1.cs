@@ -13,7 +13,7 @@ namespace CombClasses
 
         abstract public void nextObj();
 
-        public string GetObj()
+        virtual public string GetObj()
         {
             string str = "";
             for (int i = 0; i < obj.Length; i++) str += obj[i];
@@ -30,11 +30,18 @@ namespace CombClasses
             }
             return -1;
         }
+
+        protected void swapElems(int i, int j)
+        {
+            char tmp = obj[i];
+            obj[i] = obj[j];
+            obj[j] = tmp;
+        }
     }
 
     class ArrangementR: CombClass
     {
-        int k;
+        protected int k;
 
         public ArrangementR(char[] set, int k)
         {
@@ -116,17 +123,75 @@ namespace CombClasses
             }
         }
 
-        void swapElems(int i, int j)
+        public override string GetLastObj()
         {
-            char tmp = obj[i];
-            obj[i] = obj[j];
-            obj[j] = tmp;
+            string str = "";
+            for(int i = 0; i < obj.Length; i++)
+            {
+                str += set[set.Length - 1 - i];
+            }
+            return str;
+        }
+    }
+
+    class Arrangement : CombClass
+    {
+        int k;
+        public Arrangement(char[] set, int k)
+        {
+            this.set = set;
+            this.k = k;
+            obj = new char[set.Length];
+            for(int i = 0; i<obj.Length; i++)
+            {
+                obj[i] = set[i];
+            }
+}
+
+        public override void nextObj()
+        {
+            int a = 0, t = 0, b = 0;
+            do
+            {
+                a = 0; t = 0; b = 0;
+                for (int i = obj.Length - 1; i > -1; i--)
+                {
+                    if (GetIndOfChar(obj[i - 1]) < GetIndOfChar(obj[i]))
+                    {
+                        a = i - 1;
+                        t = GetIndOfChar(obj[i - 1]);
+                        break;
+                    }
+                }
+
+                for (int i = obj.Length - 1; i > -1; i--)
+                {
+                    if (GetIndOfChar(obj[i]) > t)
+                    {
+                        b = i;
+                        break;
+                    }
+                }
+                swapElems(a, b);
+
+                for (int i = 1; i <= (obj.Length - a) / 2; i++)
+                {
+                    swapElems(a + i, obj.Length - i);
+                }
+            } while (a > k - 1);
+        }
+
+        public override string GetObj()
+        {
+            string str = "";
+            for (int i = 0; i < k; i++) str += obj[i];
+            return str;
         }
 
         public override string GetLastObj()
         {
             string str = "";
-            for(int i = 0; i < obj.Length; i++)
+            for (int i = 0; i < k; i++)
             {
                 str += set[set.Length - 1 - i];
             }

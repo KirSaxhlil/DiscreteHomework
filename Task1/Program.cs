@@ -12,7 +12,7 @@ namespace Task1
         static void Main(string[] args)
         {
             char[] alphabet = { 'a', 'b', 'c', 'd', 'e', 'f' };
-            Permutation obj = new Permutation(alphabet);
+            Arrangement obj = new Arrangement(alphabet, 4);
             Console.WriteLine(obj.GetObj());
             while (obj.GetObj() != obj.GetLastObj())
             {
