@@ -12,7 +12,7 @@ namespace Task1
         static void Main(string[] args)
         {
             char[] alphabet = { 'a', 'b', 'c', 'd', 'e', 'f' };
-            Arrangement obj = new Arrangement(alphabet, 4);
+            SubSet obj = new SubSet(alphabet);
             Console.WriteLine(obj.GetObj());
             while (obj.GetObj() != obj.GetLastObj())
             {

@@ -198,4 +198,78 @@ namespace CombClasses
             return str;
         }
     }
+
+    class SubSet : CombClass
+    {
+        bool[] keep;
+
+        public SubSet(char[] set)
+        {
+            this.set = set;
+            keep = new bool[set.Length];
+            for (int i = 0; i < keep.Length; i++)
+            {
+                keep[i] = false;
+            }
+        }
+
+        public override void nextObj()
+        {
+            int a = -1, b = -5, q = 0;
+            for (int i = 0; i < keep.Length; i++) if (keep[i]) q++;
+            for(int i = 0; i < keep.Length; i++)
+            {
+                if (keep[i] == true)
+                {
+                    a = i;
+                }
+                else
+                {
+                    b = i-1;
+                    break;
+                }
+            }
+
+            for (int j = (q <= 1 ? 0 : a+1); j < keep.Length; j++)
+            {
+                if (keep[j] == true)
+                {
+                    b = j;
+                    break;
+                }
+            }
+            if (a == -1 && q == 0) keep[a + 1] = true;
+            else if (b == keep.Length-1)
+            {
+                keep[b] = false;
+                keep[a + 1] = true;
+                keep[a + 2] = true;
+            }
+            else
+            {
+                keep[b] = false;
+                keep[b + 1] = true;
+            }
+        }
+
+        public override string GetObj()
+        {
+            string str = "";
+            for(int i = 0; i < set.Length; i++)
+            {
+                if (keep[i]) str += set[i];
+            }
+            return str;
+        }
+
+        public override string GetLastObj()
+        {
+            string str = "";
+            for (int i = 0; i < set.Length; i++)
+            {
+                str += set[i];
+            }
+            return str;
+        }
+    }
 }
