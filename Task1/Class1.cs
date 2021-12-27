@@ -215,17 +215,43 @@ namespace CombClasses
 
         public override void nextObj()
         {
-            int a = -1, b = -5, q = 0;
+            bool state = false;
+            for(int i = set.Length-1; i >= 0; i--)
+            {
+                if(!state)
+                {
+                    if(keep[i] == true)
+                    {
+                        keep[i] = false;
+                    }
+                    else if(keep[i] == false)
+                    {
+                        keep[i] = true;
+                        state = true;
+                    }
+                }
+            }
+            /*int a = -1, b = -5, q = 0;
             for (int i = 0; i < keep.Length; i++) if (keep[i]) q++;
-            for(int i = 0; i < keep.Length; i++)
+            bool f = false;
+            /*for(int i = 0; i < keep.Length; i++)
             {
                 if (keep[i] == true)
                 {
-                    a = i;
+                    b = a = i;
+                    f = true;
                 }
-                else
+                //else if(f)
+                //{
+                //    b = i-1;
+                //    break;
+                //}
+            }
+            for(int i = set.Length-1; i >= 0; i--)
+            {
+                if(keep[i] == true)
                 {
-                    b = i-1;
+                    b = a = i;
                     break;
                 }
             }
@@ -239,17 +265,29 @@ namespace CombClasses
                 }
             }
             if (a == -1 && q == 0) keep[a + 1] = true;
-            else if (b == keep.Length-1)
+            else if (b >= keep.Length-1)
             {
-                keep[b] = false;
-                keep[a + 1] = true;
-                keep[a + 2] = true;
+                if(a != set.Length-1)
+                {
+                    keep[b] = false;
+                    if(a!= -1) keep[a] = false;
+                    keep[a + 1] = true;
+                    keep[a + 2] = true;
+                }
+                else
+                {
+                    for (int i = 0; i < q + 1; i++) keep[i] = true;
+                    for (int i = q + 2; i < set.Length; i++) keep[i] = false;
+                }
+                //keep[b] = false;
+                //keep[a + 1] = true;
+                //keep[a + 2] = true;
             }
             else
             {
                 keep[b] = false;
                 keep[b + 1] = true;
-            }
+            }*/
         }
 
         public override string GetObj()
@@ -279,14 +317,24 @@ namespace CombClasses
         public Combination(char[] set, int k): base(set)
         {
             this.k = k;
-            for (int i = 0; i < k; i++) keep[i] = true;
+        }
+
+        public override void nextObj()
+        {
+            int q = 0;
+            do
+            {
+                q = 0;
+                base.nextObj();
+                for (int i = 0; i < set.Length; i++)
+                    if (keep[i]) q++;
+            } while (q != k);
         }
 
         public override string GetLastObj()
         {
             string str = "";
-            for (int i = 0; i < k - 1; i++) str += set[i];
-            str += set[set.Length - 1];
+            for (int i = 0; i < k; i++) str += set[i];
             return str;
         }
     }
