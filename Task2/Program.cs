@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using CombClasses;
+using System.IO;
 
 namespace Task2
 {
@@ -41,6 +42,19 @@ namespace Task2
         }
         static void Main(string[] args)
         {
+            StreamWriter output = new StreamWriter("A Repetitions.txt");
+            StreamWriter output2 = new StreamWriter("Only A Repetitions.txt");
+            ArrangementR obj = new ArrangementR(alphabet, 5);
+            if (CheckA(obj)) output.WriteLine(obj.GetObj());
+            if (CheckOnlyA(obj)) output2.WriteLine(obj.GetObj());
+            while (obj.GetObj() != obj.GetLastObj())
+            {
+                obj.nextObj();
+                if(CheckA(obj)) output.WriteLine(obj.GetObj());
+                if (CheckOnlyA(obj)) output2.WriteLine(obj.GetObj());
+            }
+            output.Close();
+            output2.Close();
         }
     }
 }
