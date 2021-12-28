@@ -9,21 +9,21 @@ namespace CombClasses
     //Базовый класс
     abstract class CombClass
     {
-        protected char[] set;
-        protected char[] obj;
+        protected char[] set; //алфавит
+        protected char[] obj; //текущий объект
 
-        abstract public void nextObj();
+        abstract public void nextObj(); //сгенерировать следующий объект
 
-        virtual public string GetObj()
+        virtual public string GetObj() //получить текущий объект
         {
             string str = "";
             for (int i = 0; i < obj.Length; i++) str += obj[i];
             return str;
         }
 
-        abstract public string GetLastObj();
+        abstract public string GetLastObj(); //получить последний объект
 
-        protected int GetIndOfChar(char c)
+        protected int GetIndOfChar(char c) //номер элемента в алфавите
         {
             for(int i = 0; i < set.Length; i++)
             {
@@ -32,7 +32,7 @@ namespace CombClasses
             return -1;
         }
 
-        protected void swapElems(int i, int j)
+        protected void swapElems(int i, int j) //смена элементов местами
         {
             char tmp = obj[i];
             obj[i] = obj[j];
@@ -56,25 +56,21 @@ namespace CombClasses
         public override void nextObj()
         {
             int i = k - 1;
-            while (nextElem(ref obj[i--]));
+            while (nextElem(ref obj[i--])); //пока можно переходить на следующую позицию, меняем эелемент
         }
 
         protected bool nextElem(ref char elem)
         {
-            int index = 0;
-            for (int i = 0; i < set.Length; i++)
+            int index = GetIndOfChar(elem);
+            if (index == set.Length - 1) //если элемент является крайним в алфавите
             {
-                if (set[i] == elem) index = i;
-            }
-            if (index == set.Length - 1)
-            {
-                elem = set[0];
-                return true;
+                elem = set[0]; //то берем первый
+                return true; //можно переходить на следующую позицию
             }
             else
             {
-                elem = set[index + 1];
-                return false;
+                elem = set[index + 1]; //иначе берем следующий
+                return false; //нельзя переходить на следующую позицию
             }
         }
 
@@ -101,7 +97,7 @@ namespace CombClasses
         public override void nextObj()
         {
             int a = 0, t = 0, b = 0;
-            for(int i = obj.Length-1; i > -1; i--)
+            for(int i = obj.Length-1; i > -1; i--) //поиск первой позиции (1), где левый элемент меньше правого
             {
                 if(GetIndOfChar(obj[i-1]) < GetIndOfChar(obj[i])) {
                     a = i-1;
@@ -110,7 +106,7 @@ namespace CombClasses
                 }
             }
 
-            for (int i = obj.Length - 1; i > -1; i--)
+            for (int i = obj.Length - 1; i > -1; i--) //поиск первой позиции, где эелемент больше чем элемент на позиции (1)
             {
                 if (GetIndOfChar(obj[i]) > t)
                 {
@@ -118,9 +114,9 @@ namespace CombClasses
                     break;
                 }
             }
-            swapElems(a, b);
+            swapElems(a, b); //меняем их
 
-            for(int i = 1; i <= (obj.Length-a)/2; i++)
+            for (int i = 1; i <= (obj.Length-a)/2; i++) //последовательность правее (1) переворачиваем
             {
                 swapElems(a+i, obj.Length - i);
             }
@@ -158,7 +154,7 @@ namespace CombClasses
             do
             {
                 a = 0; t = 0; b = 0;
-                for (int i = obj.Length - 1; i > -1; i--)
+                for (int i = obj.Length - 1; i > -1; i--) //поиск первой позиции (1), где левый элемент меньше правого
                 {
                     if (GetIndOfChar(obj[i - 1]) < GetIndOfChar(obj[i]))
                     {
@@ -168,7 +164,7 @@ namespace CombClasses
                     }
                 }
 
-                for (int i = obj.Length - 1; i > -1; i--)
+                for (int i = obj.Length - 1; i > -1; i--) //поиск первой позиции, где эелемент больше чем элемент на позиции (1)
                 {
                     if (GetIndOfChar(obj[i]) > t)
                     {
@@ -176,13 +172,13 @@ namespace CombClasses
                         break;
                     }
                 }
-                swapElems(a, b);
+                swapElems(a, b); //меняем их
 
-                for (int i = 1; i <= (obj.Length - a) / 2; i++)
+                for (int i = 1; i <= (obj.Length - a) / 2; i++) //последовательность правее (1) переворачиваем
                 {
                     swapElems(a + i, obj.Length - i);
                 }
-            } while (a > k - 1);
+            } while (a > k - 1); //выполняем, пока позиция (1) не зайдет в длину k
         }
 
         public override string GetObj()
@@ -220,79 +216,24 @@ namespace CombClasses
 
         public override void nextObj()
         {
+            //прохожу по всем двоичным последовательностям
             bool state = false;
-            for(int i = set.Length-1; i >= 0; i--)
+            for(int i = set.Length-1; i >= 0; i--) //автомат x+1
             {
-                if(!state)
+                if(!state) //состояние q0
                 {
-                    if(keep[i] == true)
+                    if(keep[i] == true) //1(0)
                     {
                         keep[i] = false;
                     }
-                    else if(keep[i] == false)
+                    else if(keep[i] == false) //0(1) -> q1
                     {
                         keep[i] = true;
                         state = true;
                     }
                 }
+                //в состоянии q1 изменений не происходит
             }
-            /*int a = -1, b = -5, q = 0;
-            for (int i = 0; i < keep.Length; i++) if (keep[i]) q++;
-            bool f = false;
-            /*for(int i = 0; i < keep.Length; i++)
-            {
-                if (keep[i] == true)
-                {
-                    b = a = i;
-                    f = true;
-                }
-                //else if(f)
-                //{
-                //    b = i-1;
-                //    break;
-                //}
-            }
-            for(int i = set.Length-1; i >= 0; i--)
-            {
-                if(keep[i] == true)
-                {
-                    b = a = i;
-                    break;
-                }
-            }
-
-            for (int j = (q <= 1 ? 0 : a+1); j < keep.Length; j++)
-            {
-                if (keep[j] == true)
-                {
-                    b = j;
-                    break;
-                }
-            }
-            if (a == -1 && q == 0) keep[a + 1] = true;
-            else if (b >= keep.Length-1)
-            {
-                if(a != set.Length-1)
-                {
-                    keep[b] = false;
-                    if(a!= -1) keep[a] = false;
-                    keep[a + 1] = true;
-                    keep[a + 2] = true;
-                }
-                else
-                {
-                    for (int i = 0; i < q + 1; i++) keep[i] = true;
-                    for (int i = q + 2; i < set.Length; i++) keep[i] = false;
-                }
-                //keep[b] = false;
-                //keep[a + 1] = true;
-                //keep[a + 2] = true;
-            }
-            else
-            {
-                keep[b] = false;
-                keep[b + 1] = true;
-            }*/
         }
 
         public override string GetObj()
@@ -334,7 +275,7 @@ namespace CombClasses
                 base.nextObj();
                 for (int i = 0; i < set.Length; i++)
                     if (keep[i]) q++;
-            } while (q != k);
+            } while (q != k); //ищем сочетание нужной длины
         }
 
         public override string GetLastObj()
@@ -357,13 +298,10 @@ namespace CombClasses
             while (next)
             {
                 next = false;
-                if (GetIndOfChar(obj[i]) == set.Length - 1) {
-                    while (obj[i] != obj[i-1])
-                    {
-                        nextElem(ref obj[i]);
-                    }
-                    nextElem(ref obj[i]);
-                    for (int j = i + 1; j < obj.Length; j++) obj[j] = obj[i];
+                if (GetIndOfChar(obj[i]) == set.Length - 1) { //если элемент крайний в алфавите...
+                    obj[i] = obj[i - 1];
+                    nextElem(ref obj[i]); //заменяем со сдвигом
+                    for (int j = i + 1; j < obj.Length; j++) obj[j] = obj[i]; //и клонируем
                     next = true;
                 }
                 else next = nextElem(ref obj[i]);
