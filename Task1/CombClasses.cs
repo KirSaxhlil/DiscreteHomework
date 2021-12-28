@@ -23,7 +23,7 @@ namespace CombClasses
 
         abstract public string GetLastObj(); //получить последний объект
 
-        protected int GetIndOfChar(char c) //номер элемента в алфавите
+        public int GetIndOfChar(char c) //номер элемента в алфавите
         {
             for(int i = 0; i < set.Length; i++)
             {
