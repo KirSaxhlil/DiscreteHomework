@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace CombClasses
 {
+    //Базовый класс
     abstract class CombClass
     {
         protected char[] set;
@@ -39,6 +40,7 @@ namespace CombClasses
         }
     }
 
+    //Размещения с повторениями
     class ArrangementR: CombClass
     {
         protected int k;
@@ -84,6 +86,7 @@ namespace CombClasses
         }
     }
 
+    //Перестановки
     class Permutation : CombClass
     {
         public Permutation(char[] set)
@@ -134,6 +137,7 @@ namespace CombClasses
         }
     }
 
+    //Размещения
     class Arrangement : CombClass
     {
         int k;
@@ -199,6 +203,7 @@ namespace CombClasses
         }
     }
 
+    //Подмножества
     class SubSet : CombClass
     {
         protected bool[] keep;
@@ -311,6 +316,7 @@ namespace CombClasses
         }
     }
 
+    //Сочетания
     class Combination : SubSet
     {
         int k;
@@ -336,6 +342,33 @@ namespace CombClasses
             string str = "";
             for (int i = 0; i < k; i++) str += set[i];
             return str;
+        }
+    }
+
+    //Сочетания с повторениями
+    class CombinationR : ArrangementR
+    {
+        public CombinationR(char[] set, int k) : base(set, k) { }
+
+        public override void nextObj()
+        {
+            int i = k - 1;
+            bool next = true;
+            while (next)
+            {
+                next = false;
+                if (GetIndOfChar(obj[i]) == set.Length - 1) {
+                    while (obj[i] != obj[i-1])
+                    {
+                        nextElem(ref obj[i]);
+                    }
+                    nextElem(ref obj[i]);
+                    for (int j = i + 1; j < obj.Length; j++) obj[j] = obj[i];
+                    next = true;
+                }
+                else next = nextElem(ref obj[i]);
+                i--;
+            }
         }
     }
 }
