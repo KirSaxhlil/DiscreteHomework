@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace CombClasses
 {
     //Базовый класс
-    abstract class CombClass
+    public abstract class CombClass
     {
         protected char[] set; //алфавит
         protected char[] obj; //текущий объект
@@ -41,7 +41,7 @@ namespace CombClasses
     }
 
     //Размещения с повторениями
-    class ArrangementR: CombClass
+    public class ArrangementR : CombClass
     {
         protected int k;
 
@@ -83,7 +83,7 @@ namespace CombClasses
     }
 
     //Перестановки
-    class Permutation : CombClass
+    public class Permutation : CombClass
     {
         public Permutation(char[] set)
         {
@@ -134,7 +134,7 @@ namespace CombClasses
     }
 
     //Размещения
-    class Arrangement : CombClass
+    public class Arrangement : CombClass
     {
         int k;
         public Arrangement(char[] set, int k)
@@ -200,7 +200,7 @@ namespace CombClasses
     }
 
     //Подмножества
-    class SubSet : CombClass
+    public class SubSet : CombClass
     {
         protected bool[] keep;
 
@@ -258,7 +258,7 @@ namespace CombClasses
     }
 
     //Сочетания
-    class Combination : SubSet
+    public class Combination : SubSet
     {
         int k;
         public Combination(char[] set, int k): base(set)
@@ -287,7 +287,7 @@ namespace CombClasses
     }
 
     //Сочетания с повторениями
-    class CombinationR : ArrangementR
+    public class CombinationR : ArrangementR
     {
         public CombinationR(char[] set, int k) : base(set, k) { }
 
