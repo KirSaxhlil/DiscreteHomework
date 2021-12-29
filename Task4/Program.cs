@@ -30,6 +30,24 @@ namespace Task4
         }
         static void Main(string[] args)
         {
+            StreamWriter output = new StreamWriter("7-Length wrods.txt");
+            ArrangementR obj = new ArrangementR(alphabet, 7);
+            if (Check(obj, 1)) output.WriteLine(obj.GetObj());
+            while (obj.GetObj() != obj.GetLastObj())
+            {
+                obj.nextObj();
+                if (Check(obj, 1)) output.WriteLine(obj.GetObj());
+            }
+            output.Close();
+            output = new StreamWriter("9-Length words.txt");
+            obj = new ArrangementR(alphabet, 9);
+            if (Check(obj, 2)) output.WriteLine(obj.GetObj());
+            while (obj.GetObj() != obj.GetLastObj())
+            {
+                obj.nextObj();
+                if (Check(obj, 2)) output.WriteLine(obj.GetObj());
+            }
+            output.Close();
         }
     }
 }
